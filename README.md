@@ -1,4 +1,4 @@
-Final Project
+# Final Project
 # Title
 ## Differential Gene Expression in Different age Using DeSEQ2
 # Author
@@ -9,9 +9,9 @@ Final Project
 ## Vignette: http://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
 
 # Data
-## I will use the data from https://portal.gdc.cancer.gov/repository. Examining clinical data, there are 388 tumor samples, and 121 are defined by me as light smokers and 271 are identified as heavy smokers. The specific files are available are here [link].
+## I will use the data from https://portal.gdc.cancer.gov/repository. Examining clinical data, there are 228 primary tumor samples, and 90 are defined by me as young patient and 138 are identified as senior patient. The specific files are available are here [link].
 # Milestone 1
-## I will start by input data 
+## I will start by input data into tximport and start graph MA-plot.
 # Milestone 2
 # Deliverable
 ## R MarkDown
