@@ -1,4 +1,4 @@
-# Final-Project
+Final Project
 # Title
 ## Differential Gene Expression in Different age Using DeSEQ2
 # Author
