@@ -1,0 +1,188 @@
+---
+title: "TRGN510-Final-Project"
+author: "Quinta Wang"
+date: "2022-12-05"
+output: html_document
+---
+
+Install Deseq2
+```{r}
+library(BiocManager)
+BiocManager::install("DESeq2")
+```
+
+```{r}
+library(DESeq2)
+library(ggplot2)
+```
+Load all data including the gene id, unstranded data and sample name and condition.
+```{r}
+data <- read.delim("~/Desktop/backup/merge_file.txt", header = TRUE, sep = ",")
+samplename  <- read.delim("~/Desktop/TRGN510FinalProjectTSV - Sheet1.tsv", header = TRUE, sep = "\t")
+```
+
+```{r}
+samplename$Condition <- as.factor(samplename$Condition)
+```
+
+```{r}
+row.names(data) <- data$gene_id
+data <- data[-c(1)]
+```
+
+
+```{r}
+DES_data <- DESeqDataSetFromMatrix(countData = data,
+                                   colData = samplename,
+                                   design = ~ Condition)
+```
+
+
+```{r}
+DES_data <- DES_data[rowSums(counts(DES_data) > 10),]
+```
+
+
+```{r}
+DES_data <- factor(DES_data$Condition, levels = c("Young","Senior"))
+```
+
+```{r}
+condition <- factor(c("SN","SN","SN","SN"))
+```
+
+```{r}
+dds <- DESeq(DES_dataset)
+res <- results(dds)
+res
+```
+# Log fold change shrinkage for visualization and ranking
+```{r}
+res <- results(dds, name="Condition_Young_vs_Senior")
+res <- results(dds, contrast=c("Condition","Young","Senior"))
+```
+
+
+```{r}
+resultsNames(dds)
+```
+
+```{r}
+BiocManager::install("apeglm")
+library(apeglm)
+```
+
+```{r}
+resLFC <- lfcShrink(dds, coef="Condition_Young_vs_Senior", type="apeglm")
+resLFC
+```
+# p-values and adjusted p-values
+```{r}
+resOrdered <- res[order(res$pvalue),]
+```
+
+```{r}
+summary(res)
+```
+```{r}
+sum(res$padj < 0.1, na.rm = TRUE)
+```
+
+```{r}
+res05 <- results(dds, alpha=0.05)
+summary(res05)
+```
+
+```{r}
+sum(res05$padj < 0.05, na.rm=TRUE)
+
+```
+
+# Exploring and exporting results
+##MA-plot
+```{r}
+plotMA(resLFC, ylim=c(-2,2))
+```
+# Plot counts
+```{r}
+plotCounts(dds, gene=which.min(res$padj), intgroup="Condition")
+```
+```{r}
+d <- plotCounts(dds, gene=which.min(res$padj), intgroup="Condition", 
+                returnData=TRUE)
+ggplot(d, aes(x=Condition, y=count)) + 
+  geom_point(position=position_jitter(w=0.1,h=0)) + 
+  scale_y_log10(breaks=c(25,100,400))
+```
+
+# Exporting results to CSV files
+```{r}
+write.csv(as.data.frame(resOrdered), 
+          file="Condition_age_results.csv")
+```
+
+```{r}
+resSig <- subset(resOrdered, padj < 0.1)
+resSig
+```
+```{r}
+vsd <- vst(dds, blind=FALSE)
+rld <- rlog(dds, blind=FALSE)
+head(assay(vsd), 3)
+```
+
+```{r}
+BiocManager::install("vsn")
+```
+
+# Effects of transformations on the variance
+```{r}
+ntd <- normTransform(dds)
+library("vsn")
+meanSdPlot(assay(ntd))
+```
+
+```{r}
+meanSdPlot(assay(vsd))
+```
+```{r}
+meanSdPlot(assay(rld))
+```
+```{r}
+BiocManager::install("pheatmap")
+```
+
+# Heatmap of the count matrix
+# Heatmap with normal transform
+```{r}
+library("pheatmap")
+select <- order(rowMeans(counts(dds,normalized=TRUE)),
+                decreasing=TRUE)[1:20]
+df <- as.data.frame(colData(dds)[,c("Sample.Name", "Condition")])
+pheatmap(assay(ntd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
+         cluster_cols=FALSE, annotation_col=df)
+
+```
+# Heatmap with variance stablizing transformation
+```{r}
+pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
+         cluster_cols=FALSE, annotation_col=df)
+
+```
+
+# Heatmap with regularized log transformation
+```{r}
+pheatmap(assay(rld)[select,], cluster_rows=FALSE, show_rownames=FALSE,
+         cluster_cols=FALSE, annotation_col=df)
+```
+# Heatmap of the sample-to-sample distances
+```{r}
+sampleDists <- dist(t(assay(vsd)))
+DistMatrix <- as.matrix(sampleDists)
+pheatmap(DistMatrix)
+```
+# Principal component plot of the samples
+```{r}
+plotPCA(vsd, intgroup=c("Condition"))
+```
+
