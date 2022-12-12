@@ -309,7 +309,7 @@ sum(res05$padj < 0.05, na.rm=TRUE)
 plotMA(resLFC, ylim=c(-2,2))
 ```
 
-![](TRGN510-Final-Project-Github_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](unnamed-chunk-18-1.png)<!-- -->
 \# Plot counts
 
 ``` r
