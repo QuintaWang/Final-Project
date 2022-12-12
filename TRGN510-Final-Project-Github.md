@@ -316,7 +316,7 @@ plotMA(resLFC, ylim=c(-2,2))
 plotCounts(dds, gene=which.min(res$padj), intgroup="Condition")
 ```
 
-![](TRGN510-Final-Project-Github_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+![](unnamed-chunk-19-1.png)<!-- -->
 
 ``` r
 d <- plotCounts(dds, gene=which.min(res$padj), intgroup="Condition", 
@@ -326,7 +326,7 @@ ggplot(d, aes(x=Condition, y=count)) +
   scale_y_log10(breaks=c(25,100,400))
 ```
 
-![](TRGN510-Final-Project-Github_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](unnamed-chunk-20-1.png)<!-- -->
 
 # Exporting results to CSV files
 
@@ -452,19 +452,19 @@ library("vsn")
 meanSdPlot(assay(ntd))
 ```
 
-![](TRGN510-Final-Project-Github_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+![](unnamed-chunk-25-1.png)<!-- -->
 
 ``` r
 meanSdPlot(assay(vsd))
 ```
 
-![](TRGN510-Final-Project-Github_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+![](unnamed-chunk-26-1.png)<!-- -->
 
 ``` r
 meanSdPlot(assay(rld))
 ```
 
-![](TRGN510-Final-Project-Github_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+![](unnamed-chunk-27-1.png)<!-- -->
 
 ``` r
 BiocManager::install("pheatmap")
@@ -488,7 +488,7 @@ pheatmap(assay(ntd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
          cluster_cols=FALSE, annotation_col=df)
 ```
 
-![](TRGN510-Final-Project-Github_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+![](unnamed-chunk-29-1.png)<!-- -->
 \# Heatmap with variance stablizing transformation
 
 ``` r
@@ -496,7 +496,7 @@ pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
          cluster_cols=FALSE, annotation_col=df)
 ```
 
-![](TRGN510-Final-Project-Github_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
+![](unnamed-chunk-30-1.png)<!-- -->
 
 # Heatmap with regularized log transformation
 
@@ -505,7 +505,7 @@ pheatmap(assay(rld)[select,], cluster_rows=FALSE, show_rownames=FALSE,
          cluster_cols=FALSE, annotation_col=df)
 ```
 
-![](TRGN510-Final-Project-Github_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
+![](unnamed-chunk-31-1.png)<!-- -->
 \# Heatmap of the sample-to-sample distances
 
 ``` r
@@ -514,11 +514,11 @@ DistMatrix <- as.matrix(sampleDists)
 pheatmap(DistMatrix)
 ```
 
-![](TRGN510-Final-Project-Github_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+![](unnamed-chunk-32-1.png)<!-- -->
 \# Principal component plot of the samples
 
 ``` r
 plotPCA(vsd, intgroup=c("Condition"))
 ```
 
-![](TRGN510-Final-Project-Github_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
+![](unnamed-chunk-33-1.png)<!-- -->
