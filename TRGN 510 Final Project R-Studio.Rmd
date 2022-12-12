@@ -17,8 +17,8 @@ library(ggplot2)
 ```
 Load all data including the gene id, unstranded data and sample name and condition.
 ```{r}
-data <- read.delim("~/Desktop/backup/merge_file.txt", header = TRUE, sep = ",")
-samplename  <- read.delim("~/Desktop/TRGN510FinalProjectTSV - Sheet1.tsv", header = TRUE, sep = "\t")
+data <- read.delim("merge_file.txt", header = TRUE, sep = ",")
+samplename  <- read.delim("TRGN510FinalProjectTSV-Sheet1.tsv", header = TRUE, sep = "\t")
 ```
 
 ```{r}
